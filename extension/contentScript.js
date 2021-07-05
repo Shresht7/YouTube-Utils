@@ -118,10 +118,7 @@ const speedRange = new Element('input')
     .getElement()
 
 //  Slider change event listener
-speedRange.addEventListener('change', (e) => {
-    console.log('SpeedRange Changed to ' + e.target.value)
-    videoElement.playbackRate = e.target.value || 1
-})
+speedRange.addEventListener('change', (e) => { videoElement.playbackRate = e.target.value || 1 })
 
 //  Append slider to YouTube LeftControl section
 youtubeLeftControls.append(speedRange)
