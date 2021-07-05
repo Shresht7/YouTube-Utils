@@ -69,10 +69,13 @@ const loopSvg = (color) => (
     `
 )
 
+//  Returns loops innerHTML
+const setLoopHTML = () => videoElement.loop ? loopSvg('#ff0033') : loopSvg()
+
 //  Button to toggle loop
 const loopToggleBtn = new Element('div')
     .withID('yt-utils-loopControl')
-    .withHTML(videoElement.loop ? loopSvg('#ff0033') : loopSvg())
+    .withHTML(setLoopHTML())
     .withClasses(['.ytp-button'])
     .withStyles({
         display: 'flex',
@@ -84,11 +87,16 @@ const loopToggleBtn = new Element('div')
     .getElement()
 
 //  Button click event listener
-loopToggleBtn.addEventListener('click', () => {
-    console.log('LoopClicked')
-    videoElement.loop = !videoElement.loop
-    loopToggleBtn.innerHTML = videoElement.loop ? loopSvg('#ff0033') : loopSvg()
+loopToggleBtn.addEventListener('click', () => { videoElement.loop = !videoElement.loop })
+
+//  Observe video element for loop attribute change and change loop-SVG
+const videoObserver = new MutationObserver(mutations => {
+    mutations.forEach(mutation => {
+        if (mutation.type !== 'attributes' || mutation.attributeName !== 'loop') { return }
+        loopToggleBtn.innerHTML = setLoopHTML()
+    })
 })
+videoObserver.observe(videoElement, { attributes: true })
 
 //  Position the button in the YouTube LeftControl section before the Volume button (3rd ChildNode)
 youtubeLeftControls.insertBefore(loopToggleBtn, youtubeLeftControls.childNodes[3])
