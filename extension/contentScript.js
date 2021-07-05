@@ -62,7 +62,7 @@ loopToggleBtn.addEventListener('click', () => {
     loopToggleBtn.innerText = videoElement.loop ? 'DLoop' : 'ELoop'
 })
 
-youtubeLeftControls.append(loopToggleBtn)
+youtubeLeftControls.insertBefore(loopToggleBtn, youtubeLeftControls.childNodes[3])
 
 //  =============
 //  SPEED CONTROL
