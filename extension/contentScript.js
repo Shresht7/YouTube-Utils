@@ -51,23 +51,27 @@ class Element {
 //  LOOP CONTROL TOGGLE
 //  ===================
 
+//  Button to toggle loop
 const loopToggleBtn = new Element('button')
     .withID('yt-utils-loopControl')
     .withText(videoElement.loop ? 'DLoop' : 'ELoop')
     .getElement()
 
+//  Button click event listener
 loopToggleBtn.addEventListener('click', () => {
     console.log('LoopClicked')
     videoElement.loop = !videoElement.loop
     loopToggleBtn.innerText = videoElement.loop ? 'DLoop' : 'ELoop'
 })
 
+//  Position the button in the YouTube LeftControl section before the Volume button (3rd ChildNode)
 youtubeLeftControls.insertBefore(loopToggleBtn, youtubeLeftControls.childNodes[3])
 
 //  =============
 //  SPEED CONTROL
 //  =============
 
+//  Range Slider to control speed
 const speedRange = new Element('input')
     .withID('yt-utils-speedControl')
     .withAttributes({
@@ -79,9 +83,11 @@ const speedRange = new Element('input')
     })
     .getElement()
 
+//  Slider change event listener
 speedRange.addEventListener('change', (e) => {
     console.log('SpeedRange Changed to ' + e.target.value)
     videoElement.playbackRate = e.target.value || 1
 })
 
+//  Append slider to YouTube LeftControl section
 youtubeLeftControls.append(speedRange)
