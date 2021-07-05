@@ -10,7 +10,7 @@ const youtubeLeftControls = document.getElementsByClassName('ytp-left-controls')
 //  ===================
 
 //  Constructs HTML Elements
-class Element {
+class DOMElement {
     constructor(tagName) {
         this.element = document.createElement(tagName)
     }
@@ -73,7 +73,7 @@ const loopSvg = (color) => (
 const setLoopHTML = () => videoElement.loop ? loopSvg('#ff0033') : loopSvg()
 
 //  Button to toggle loop
-const loopToggleBtn = new Element('div')
+const loopToggleBtn = new DOMElement('div')
     .withID('yt-utils-loopControl')
     .withHTML(setLoopHTML())
     .withClasses(['.ytp-button'])
@@ -106,7 +106,7 @@ youtubeLeftControls.insertBefore(loopToggleBtn, youtubeLeftControls.childNodes[3
 //  =============
 
 //  Speed Control Container Div
-const speedControl = new Element('div')
+const speedControl = new DOMElement('div')
     .withID('yt-utils-speedControlArea')
     .withStyles({
         display: 'flex',
@@ -121,7 +121,7 @@ youtubeLeftControls.append(speedControl)
 //  =============
 
 //  Displays the current playback rate
-const speedDisplay = new Element('p')
+const speedDisplay = new DOMElement('p')
     .withID('yt-utils-speedDisplay')
     .withText(videoElement.playbackRate.toString() + 'x')
     .withStyles({
@@ -136,7 +136,7 @@ speedControl.append(speedDisplay)
 //  ===========
 
 //  Range Slider to control speed
-const speedRange = new Element('input')
+const speedRange = new DOMElement('input')
     .withID('yt-utils-speedControl')
     .withAttributes({
         type: 'range',
