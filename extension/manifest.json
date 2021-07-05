@@ -1,0 +1,6 @@
+{
+    "name": "YouTube-Utils",
+    "description": "A chrome-extension with utility features for YouTube",
+    "version": "0.1.0",
+    "manifest_version": 3
+}
