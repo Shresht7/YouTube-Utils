@@ -130,8 +130,9 @@ const contentScript = () => {
         })
         .getElement()
 
-    //  Append speedControl area to YouTube LeftControl section
-    youtubeLeftControls.append(speedControl)
+    //  Append speedControl area to YouTube LeftControl section before the time element (5th ChlidNode - after being shifted by the previous insertion)
+    youtubeLeftControls.insertBefore(speedControl, youtubeLeftControls.childNodes[5])
+
 
     //      SPEED DISPLAY
     //      -------------
