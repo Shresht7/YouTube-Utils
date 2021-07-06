@@ -1,20 +1,26 @@
 let registered  //  Boolean to check if content-script has already been registered
-const youTubeNavEvent = 'yt-navigate-start'
+const youTubeNavEvent = 'yt-navigate-start' //  YouTube SPA navigation DOM event
 
 //  =======================
 //  REGISTER CONTENT SCRIPT
 //  =======================
 
-document.addEventListener('yt-navigate-start', () => {
-    if (location.pathname !== '/watch' || registered) { return }    //  Skip registration if not /watch or already registered
-    contentScript()
-})
+if (document.getElementsByTagName('video').length > 0) {                //  If the first page has video elements (i.e watch page)
+    contentScript()                                                     //  Register contentScript
+} else {                                                                //  Else if the first page is not /watch then register a nav listener
+    document.addEventListener(youTubeNavEvent, () => {
+        if (registered || location.pathname !== '/watch') { return }    //  Skip registration if not /watch or already registered
+        contentScript()                                                 //  Register contentScript on navigation to /watch
+    })
+}
 
 //  ==============
 //  CONTENT SCRIPT
 //  ==============
 
-const contentScript = () => {
+//  The entire content-script
+function contentScript() {
+    if (registered || location.pathname !== '/watch') { return }    //  Do nothing if not on /watch or already registered
 
     registered = true   //  Content-Script registered
 
@@ -86,7 +92,7 @@ const contentScript = () => {
     `
     )
 
-    //  Returns loops innerHTML
+    //  Returns loop's innerHTML
     const setLoopHTML = () => videoElement.loop ? loopSvg('#ff0033') : loopSvg()
 
     //  Button to toggle loop
