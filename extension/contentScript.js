@@ -132,13 +132,26 @@ function contentScript() {
         .withID('yt-utils-speedControlArea')
         .withStyles({
             display: 'flex',
-            marginLeft: '1rem'
+            margin: '0 0.5rem'
         })
         .getElement()
 
     //  Append speedControl area to YouTube LeftControl section before the time element (5th ChlidNode - after being shifted by the previous insertion)
-    youtubeLeftControls.insertBefore(speedControl, youtubeLeftControls.childNodes[5])
+    youtubeLeftControls.insertBefore(speedControl, youtubeLeftControls.childNodes[6])
 
+
+    //      SPEED LEFT CHEVRON
+    //      ------------------
+
+    const speedLeftChevron = new DOMElement('div')
+        .withID('yt-utils-speedLeftChevron')
+        .withText('-')
+        .withStyles({ opacity: 0 })
+        .getElement()
+
+    speedLeftChevron.addEventListener('click', () => { if (videoElement.playbackRate > 0.5) { videoElement.playbackRate -= 0.5 } })
+
+    speedControl.append(speedLeftChevron)
 
     //      SPEED DISPLAY
     //      -------------
@@ -147,46 +160,45 @@ function contentScript() {
     const speedDisplay = new DOMElement('p')
         .withID('yt-utils-speedDisplay')
         .withText(videoElement.playbackRate.toString() + 'x')
-        .withStyles({
-            width: '3ch',
-            marginRight: '0.5rem'
-        })
+        .withStyles({ margin: '0 0.25rem' })
         .getElement()
 
     speedControl.append(speedDisplay)
 
-    //      SPEED RANGE
-    //      -----------
 
-    //  Range Slider to control speed
-    const speedRange = new DOMElement('input')
-        .withID('yt-utils-speedControl')
-        .withAttributes({
-            type: 'range',
-            min: 0,
-            max: 4,
-            step: 0.5,
-            value: videoElement.playbackRate || 1.0
-        })
-        .withStyles({
-            display: 'none',
-            transition: '0.25s ease-in'
-        })
+    //      SPEED RIGHT CHEVRON
+    //      -------------------
+
+    const speedRightChevron = new DOMElement('div')
+        .withID('yt-utils-speedRightChevron')
+        .withText('+')
+        .withStyles({ opacity: 0 })
         .getElement()
 
-    //  Slider change event listener
-    speedRange.addEventListener('change', (e) => { videoElement.playbackRate = e.target.value || 1 })
+    speedRightChevron.addEventListener('click', () => { if (videoElement.playbackRate < 4.0) { videoElement.playbackRate += 0.5 } })
 
-    //  Video Element responder
-    videoElement.addEventListener('ratechange', (e) => {
-        speedDisplay.innerText = e.target.playbackRate.toString() + 'x'
-        speedRange.value = e.target.playbackRate
+    speedControl.append(speedRightChevron)
+
+    //  ===============================
+    //  SPEED CONTROL HOVER INTERACTION
+    //  ===============================
+
+    let timeout
+    speedControl.addEventListener('mouseover', () => {
+        if (timeout) { clearTimeout(timeout) }
+        speedLeftChevron.style.opacity = 1
+        speedRightChevron.style.opacity = 1
     })
 
-    //  Hover effects
-    speedControl.addEventListener('mouseover', () => { speedRange.style.display = 'block' })
-    speedControl.addEventListener('mouseleave', () => { speedRange.style.display = 'none' })
+    speedControl.addEventListener('mouseleave', () => {
+        timeout = setTimeout(() => {
+            speedLeftChevron.style.opacity = 0
+            speedRightChevron.style.opacity = 0
+        }, 3000)
+    })
 
-    //  Append speedRange to speedControl area
-    speedControl.append(speedRange)
+    // Video Element Responder
+    videoElement.addEventListener('ratechange', (e) => {
+        speedDisplay.innerText = e.target.playbackRate.toFixed(1) + 'x'
+    })
 }
