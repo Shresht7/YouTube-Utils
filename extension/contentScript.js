@@ -133,7 +133,7 @@ function contentScript() {
         })
         .getElement()
 
-    //  Append speedControl area to YouTube LeftControl section after the time element (6th ChlidNode - after being shifted by the previous insertion)
+    //  appendChild speedControl area to YouTube LeftControl section after the time element (6th ChlidNode - after being shifted by the previous insertion)
     youtubeLeftControls.insertBefore(speedControl, youtubeLeftControls.childNodes[6])
 
     const setChevron = (color) => `
@@ -162,7 +162,7 @@ function contentScript() {
 
     speedLeftChevron.addEventListener('click', () => { if (videoElement.playbackRate > 0.5) { videoElement.playbackRate -= 0.5 } })
 
-    speedControl.append(speedLeftChevron)
+    speedControl.appendChild(speedLeftChevron)
 
     //      SPEED DISPLAY
     //      -------------
@@ -173,7 +173,7 @@ function contentScript() {
         .withText(videoElement.playbackRate.toFixed(1) + 'x')
         .getElement()
 
-    speedControl.append(speedDisplay)
+    speedControl.appendChild(speedDisplay)
 
 
     //      SPEED RIGHT CHEVRON
@@ -192,7 +192,7 @@ function contentScript() {
 
     speedRightChevron.addEventListener('click', () => { if (videoElement.playbackRate < 4.0) { videoElement.playbackRate += 0.5 } })
 
-    speedControl.append(speedRightChevron)
+    speedControl.appendChild(speedRightChevron)
 
     //  ===============================
     //  SPEED CONTROL HOVER INTERACTION
