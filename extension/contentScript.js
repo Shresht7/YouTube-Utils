@@ -125,9 +125,11 @@ function contentScript() {
     //  SPEED CONTROL
     //  =============
 
+    //  Control parameters
     const ADJUST_SPEED = 0.5
     const MIN_SPEED = 0.5
     const MAX_SPEED = 4.0
+    let CURRENT_SPEED = videoElement.playbackRate
 
     //  Speed Control Container Div
     const speedControl = new DOMElement('div')
@@ -201,9 +203,16 @@ function contentScript() {
 
     speedControl.appendChild(speedRightChevron)
 
-    //  ===============================
+    //  SPEED CONTROL OBSERVER
+    //  ----------------------
+
+    //  If the video duration changes (i.e. Ads), reset playback speed to the set current speed
+    videoElement.addEventListener('durationchange', (e) => {
+        e.target.playbackRate = CURRENT_SPEED
+    })
+
     //  SPEED CONTROL HOVER INTERACTION
-    //  ===============================
+    //  -------------------------------
 
     let timeout
     speedControl.addEventListener('mouseover', () => {
@@ -221,6 +230,7 @@ function contentScript() {
 
     // Video Element Responder
     videoElement.addEventListener('ratechange', (e) => {
+        CURRENT_SPEED = e.target.playbackRate
         speedDisplay.innerText = e.target.playbackRate.toFixed(1) + 'x'
     })
 }

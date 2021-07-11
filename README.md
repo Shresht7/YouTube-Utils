@@ -7,6 +7,7 @@ A chrome-extension that adds some utility features to YouTube.
 
 - Learn about browser extensions.
 - Create a suite of utility features for personal use.
+- Work with vanilla JS 😱
 
 ## FEATURES
 
