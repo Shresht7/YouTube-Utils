@@ -1,16 +1,16 @@
 let registered  //  Boolean to check if content-script has already been registered
-const youTubeNavEvent = 'yt-navigate-start' //  YouTube SPA navigation DOM event
+const youTubeNavEvent = 'yt-navigate-start' //  YouTube Single-Page-App navigation event
 
 //  =======================
 //  REGISTER CONTENT SCRIPT
 //  =======================
 
-if (document.getElementsByTagName('video').length > 0) {                //  If the first page has video elements (i.e watch page)
-    contentScript()                                                     //  Register contentScript
-} else {                                                                //  Else if the first page is not /watch then register a nav listener
+if (document.getElementsByTagName('video').length > 0) {                //  If the initially loaded page has video elements (i.e watch page)
+    contentScript()                                                         //  Then register Content-Script
+} else {                                                                //  Else if the first page is not /watch, then register a nav listener
     document.addEventListener(youTubeNavEvent, () => {
-        if (registered || location.pathname !== '/watch') { return }    //  Skip registration if not /watch or already registered
-        contentScript()                                                 //  Register contentScript on navigation to /watch
+        if (registered || location.pathname !== '/watch') { return }    //  Skip registration if not navigating to /watch or if already registered
+        contentScript()                                                 //  Register Content-Script on navigation to /watch
     })
 }
 
@@ -20,9 +20,9 @@ if (document.getElementsByTagName('video').length > 0) {                //  If t
 
 //  The entire content-script
 function contentScript() {
-    if (registered || location.pathname !== '/watch') { return }    //  Do nothing if not on /watch or already registered
+    if (registered || location.pathname !== '/watch') { return }    //  Do nothing if not on /watch or already registered - (redundant check)
 
-    registered = true   //  Content-Script registered
+    registered = true   //  Set Content-Script Registered Boolean to true
 
     //  DOM ELEMENTS
     //  ============
@@ -33,7 +33,7 @@ function contentScript() {
     //  ELEMENT CONSTRUCTOR
     //  ===================
 
-    //  Constructs HTML Elements
+    //  Utility Class that Constructs HTML Elements
     class DOMElement {
         constructor(tagName) {
             this.element = document.createElement(tagName)
@@ -107,7 +107,7 @@ function contentScript() {
         })
         .getElement()
 
-    //  Button click event listener
+    //  Button click event listener - Toggles video's loop property
     loopToggleBtn.addEventListener('click', () => { videoElement.loop = !videoElement.loop })
 
     //  Observe video element for loop attribute change and change loop-SVG
@@ -125,6 +125,10 @@ function contentScript() {
     //  SPEED CONTROL
     //  =============
 
+    const ADJUST_SPEED = 0.5
+    const MIN_SPEED = 0.5
+    const MAX_SPEED = 4.0
+
     //  Speed Control Container Div
     const speedControl = new DOMElement('div')
         .withID('yt-utils-speedControlArea')
@@ -133,9 +137,10 @@ function contentScript() {
         })
         .getElement()
 
-    //  appendChild speedControl area to YouTube LeftControl section after the time element (6th ChlidNode - after being shifted by the previous insertion)
+    //  append speedControl area to YouTube LeftControl section after the time element (6th ChlidNode - after being shifted by the previous insertion)
     youtubeLeftControls.insertBefore(speedControl, youtubeLeftControls.childNodes[6])
 
+    //  Returns chevron SVG
     const setChevron = (color) => `
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 48 48"><title>yt-utils-chevron</title>
             <g class="nc-icon-wrapper" fill=${color || '#ffffff'}>
@@ -160,7 +165,8 @@ function contentScript() {
         })
         .getElement()
 
-    speedLeftChevron.addEventListener('click', () => { if (videoElement.playbackRate > 0.5) { videoElement.playbackRate -= 0.5 } })
+    //  Left chevron click event listener - Reduces playback rate
+    speedLeftChevron.addEventListener('click', () => { if (videoElement.playbackRate > MIN_SPEED) { videoElement.playbackRate -= ADJUST_SPEED } })
 
     speedControl.appendChild(speedLeftChevron)
 
@@ -190,7 +196,8 @@ function contentScript() {
         })
         .getElement()
 
-    speedRightChevron.addEventListener('click', () => { if (videoElement.playbackRate < 4.0) { videoElement.playbackRate += 0.5 } })
+    //  Right chevron click event listener - Increases playback rate
+    speedRightChevron.addEventListener('click', () => { if (videoElement.playbackRate < MAX_SPEED) { videoElement.playbackRate += ADJUST_SPEED } })
 
     speedControl.appendChild(speedRightChevron)
 
