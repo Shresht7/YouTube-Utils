@@ -6,7 +6,11 @@ const ADJUST_SPEED = 0.5
 const MIN_SPEED = 0.5
 const MAX_SPEED = 4.0
 
-//  Returns chevron SVG
+/**
+ * Creates and returns the chevron SVG
+ * @param {string} color Hex color code
+ * @returns Chevron SVG
+ */
 const setChevron = (color) => `
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 48 48"><title>yt-utils-chevron</title>
         <g class="nc-icon-wrapper" fill=${color || '#ffffff'}>
@@ -15,9 +19,14 @@ const setChevron = (color) => `
     </svg>
 `
 
+/**
+ * Setup the speed control functionality
+ * @param {HTMLVideoElement} videoElement HTML Video Element
+ * @param {HTMLElement} youtubeLeftControls YouTube Player Control Panel (Left-Side)
+ */
 const setupSpeed = (videoElement, youtubeLeftControls) => {
 
-    let CURRENT_SPEED = videoElement.playbackRate
+    let CURRENT_SPEED = videoElement.playbackRate   //  Initialize the Current Speed Variable
 
     //  Speed Control Container Div
     const speedControl = new DOMElement('div')
@@ -94,14 +103,14 @@ const setupSpeed = (videoElement, youtubeLeftControls) => {
     let timeout
     speedControl.addEventListener('mouseover', () => {
         if (timeout) { clearTimeout(timeout) }
-        speedLeftChevron.style.opacity = "1"
-        speedRightChevron.style.opacity = "1"
+        speedLeftChevron.style.opacity = 1
+        speedRightChevron.style.opacity = 1
     })
 
     speedControl.addEventListener('mouseleave', () => {
         timeout = setTimeout(() => {
-            speedLeftChevron.style.opacity = "0"
-            speedRightChevron.style.opacity = "0"
+            speedLeftChevron.style.opacity = 0
+            speedRightChevron.style.opacity = 0
         }, 3000)
     })
 

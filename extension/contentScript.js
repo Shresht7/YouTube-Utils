@@ -127,13 +127,13 @@
       if (timeout) {
         clearTimeout(timeout);
       }
-      speedLeftChevron.style.opacity = "1";
-      speedRightChevron.style.opacity = "1";
+      speedLeftChevron.style.opacity = 1;
+      speedRightChevron.style.opacity = 1;
     });
     speedControl.addEventListener("mouseleave", () => {
       timeout = setTimeout(() => {
-        speedLeftChevron.style.opacity = "0";
-        speedRightChevron.style.opacity = "0";
+        speedLeftChevron.style.opacity = 0;
+        speedRightChevron.style.opacity = 0;
       }, 3e3);
     });
     videoElement.addEventListener("ratechange", (e) => {
@@ -144,7 +144,7 @@
   var speed_default = setupSpeed;
 
   // src/contentScript/lib/pip.js
-  var setChevron2 = () => `
+  var setPip = () => `
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><title>yt-utils-pip</title>
     <path d="M20 4H4C2.89543 4 2 4.89543 2 6V18C2 19.1046 2.89543 20 4 20H20C21.1046 20 22 19.1046 22 18V6C22 4.89543 21.1046 4 20 4Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     <path d="M20 13H15C13.8954 13 13 13.8954 13 15V18C13 19.1046 13.8954 20 15 20H20C21.1046 20 22 19.1046 22 18V15C22 13.8954 21.1046 13 20 13Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -156,15 +156,22 @@
     if (!document.pictureInPictureEnabled) {
       return;
     }
-    const pipBtn = new DOMElement("div").withID("yt-utils-pipBtn").withHTML(setChevron2()).withStyles({
+    const pipBtn = new DOMElement("div").withID("yt-utils-pipBtn").withHTML(setPip()).withStyles({
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
+      opacity: 0.9,
       transform: "rotateX(180deg)"
     }).getElement();
-    youtubeLeftControls.insertBefore(pipBtn, youtubeLeftControls.childNodes[7]);
+    youtubeLeftControls.appendChild(pipBtn);
     pipBtn.addEventListener("click", () => {
       videoElement.requestPictureInPicture();
+    });
+    videoElement.addEventListener("enterpictureinpicture", () => {
+      pipBtn.style.opacity = 0;
+    });
+    videoElement.addEventListener("leavepictureinpicture", () => {
+      pipBtn.style.opacity = 0.9;
     });
   };
   var pip_default = setupPip;
@@ -174,22 +181,22 @@
   var ytLeftControls = "ytp-left-controls";
 
   // src/contentScript/contentScript.js
-  var registered;
+  var REGISTERED;
   if (document.getElementsByTagName("video").length > 0) {
     setup();
   } else {
     document.addEventListener(ytNavEvent, () => {
-      if (registered || location.pathname !== "/watch") {
+      if (REGISTERED || location.pathname !== "/watch") {
         return;
       }
       setup();
     });
   }
   function setup() {
-    if (registered || location.pathname !== "/watch") {
+    if (REGISTERED || location.pathname !== "/watch") {
       return;
     }
-    registered = true;
+    REGISTERED = true;
     const videoElement = document.getElementsByTagName("video")[0];
     const youtubeLeftControls = document.getElementsByClassName(ytLeftControls)[0];
     loop_default(videoElement, youtubeLeftControls);

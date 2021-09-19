@@ -1,11 +1,10 @@
 //  Utils
 import { DOMElement } from "../utils/DOMElement"
 
-//  Constants
+//  Loop Button CSS
 const loopONColor = '#ff0033'  //  Red color for Loop's ON state
 const loopOFFColor = '#ffffff'  //  White color for Loop's OFF state
-
-const loopStyles = {    //  Loop Button CSS
+const loopStyles = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -13,7 +12,11 @@ const loopStyles = {    //  Loop Button CSS
     transition: '0.1s'
 }
 
-//  Creates and returns the Loop SVG
+/**
+ * Creates and returns the loop SVG
+ * @param {boolean} isON Video Loop Toggle State
+ * @returns Loop SVG
+ */
 const loopSVG = (isON) => {
     const color = isON ? loopONColor : loopOFFColor
     return (`
@@ -29,6 +32,11 @@ const loopSVG = (isON) => {
 //  SETUP LOOP TOGGLE
 //  =================
 
+/**
+ * Setup the Loop button in the YouTube video player
+ * @param {HTMLVideoElement} videoElement HTML Video Element
+ * @param {HTMLElement} youtubeLeftControls YouTube Player Control-Panel (Left-Side)
+ */
 const setupLoop = (videoElement, youtubeLeftControls) => {
 
     //  Create button to toggle loop
