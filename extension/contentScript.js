@@ -37,11 +37,6 @@
     }
   };
 
-  // src/contentScript/utils/YTConstants.js
-  var ytNavEvent = "yt-navigate-start";
-  var ytButton = ".ytp-button";
-  var ytLeftControls = ".ytp-left-controls";
-
   // src/contentScript/lib/loop.js
   var loopONColor = "#ff0033";
   var loopOFFColor = "#ffffff";
@@ -63,7 +58,7 @@
     `;
   };
   var setupLoop = (videoElement, youtubeLeftControls) => {
-    const loopToggleBtn = new DOMElement("div").withID("yt-utils-loopControl").withHTML(loopSVG(videoElement.loop)).withClasses([ytButton]).withStyles(loopStyles).getElement();
+    const loopToggleBtn = new DOMElement("div").withID("yt-utils-loopControl").withHTML(loopSVG(videoElement.loop)).withClasses([".ytp-button"]).withStyles(loopStyles).getElement();
     loopToggleBtn.addEventListener("click", () => {
       videoElement.loop = !videoElement.loop;
     });
@@ -147,6 +142,9 @@
     });
   };
   var speed_default = setupSpeed;
+  // src/contentScript/utils/YTConstants.js
+  var ytNavEvent = "yt-navigate-start";
+  var ytLeftControls = "ytp-left-controls";
 
   // src/contentScript/contentScript.js
   var registered;
