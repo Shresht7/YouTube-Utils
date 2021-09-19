@@ -1,5 +1,5 @@
 (() => {
-  // src/utils/DOMElement.js
+  // src/contentScript/utils/DOMElement.js
   var DOMElement = class {
     constructor(tagName) {
       this.element = document.createElement(tagName);
@@ -37,13 +37,12 @@
     }
   };
 
-  // src/utils/YTConstants.js
+  // src/contentScript/utils/YTConstants.js
   var ytNavEvent = "yt-navigate-start";
   var ytButton = ".ytp-button";
   var ytLeftControls = ".ytp-left-controls";
 
-  // src/lib/loop.js
-  var loopID = "yt-utils-loopControl";
+  // src/contentScript/lib/loop.js
   var loopONColor = "#ff0033";
   var loopOFFColor = "#ffffff";
   var loopStyles = {
@@ -63,8 +62,8 @@
         </svg>
     `;
   };
-  var setupLoop = (videoElement, youtubeLeftControls) => {
-    const loopToggleBtn = new DOMElement("div").withID(loopID).withHTML(loopSVG(videoElement.loop)).withClasses([ytButton]).withStyles(loopStyles).getElement();
+  var setupLoop = (videoElement, youtubeLeftControls2) => {
+    const loopToggleBtn = new DOMElement("div").withID("yt-utils-loopControl").withHTML(loopSVG(videoElement.loop)).withClasses([ytButton]).withStyles(loopStyles).getElement();
     loopToggleBtn.addEventListener("click", () => {
       videoElement.loop = !videoElement.loop;
     });
@@ -77,45 +76,27 @@
       });
     });
     loopObserver.observe(videoElement, { attributes: true });
-    youtubeLeftControls.insertBefore(loopToggleBtn, youtubeLeftControls.childNodes[3]);
+    youtubeLeftControls2.insertBefore(loopToggleBtn, youtubeLeftControls2.childNodes[3]);
   };
   var loop_default = setupLoop;
 
-  // src/contentScript.js
-  var registered;
-  if (document.getElementsByTagName("video").length > 0) {
-    contentScript();
-  } else {
-    document.addEventListener(ytNavEvent, () => {
-      if (registered || location.pathname !== "/watch") {
-        return;
-      }
-      contentScript();
-    });
-  }
-  function contentScript() {
-    if (registered || location.pathname !== "/watch") {
-      return;
-    }
-    registered = true;
-    const videoElement = document.getElementsByTagName("video")[0];
-    const youtubeLeftControls = document.getElementsByClassName(ytLeftControls)[0];
-    loop_default(videoElement, youtubeLeftControls);
-    const ADJUST_SPEED = 0.5;
-    const MIN_SPEED = 0.5;
-    const MAX_SPEED = 4;
+  // src/contentScript/lib/speed.js
+  var ADJUST_SPEED = 0.5;
+  var MIN_SPEED = 0.5;
+  var MAX_SPEED = 4;
+  var setChevron = (color) => `
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 48 48"><title>yt-utils-chevron</title>
+        <g class="nc-icon-wrapper" fill=${color || "#ffffff"}>
+            <path d="M20 12l-2.83 2.83L26.34 24l-9.17 9.17L20 36l12-12z"/>
+        </g>
+    </svg>
+`;
+  var setupSpeed = (videoElement, youTubeLeftControls) => {
     let CURRENT_SPEED = videoElement.playbackRate;
     const speedControl = new DOMElement("div").withID("yt-utils-speedControlArea").withStyles({
       display: "flex"
     }).getElement();
     youtubeLeftControls.insertBefore(speedControl, youtubeLeftControls.childNodes[6]);
-    const setChevron = (color) => `
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 48 48"><title>yt-utils-chevron</title>
-            <g class="nc-icon-wrapper" fill=${color || "#ffffff"}>
-                <path d="M20 12l-2.83 2.83L26.34 24l-9.17 9.17L20 36l12-12z"/>
-            </g>
-        </svg>
-    `;
     const speedLeftChevron = new DOMElement("div").withID("yt-utils-speedLeftChevron").withHTML(setChevron()).withStyles({
       display: "flex",
       justifyContent: "center",
@@ -164,5 +145,29 @@
       CURRENT_SPEED = e.target.playbackRate;
       speedDisplay.innerText = e.target.playbackRate.toFixed(1) + "x";
     });
+  };
+  var speed_default = setupSpeed;
+
+  // src/contentScript/contentScript.js
+  var registered;
+  if (document.getElementsByTagName("video").length > 0) {
+    setup();
+  } else {
+    document.addEventListener(ytNavEvent, () => {
+      if (registered || location.pathname !== "/watch") {
+        return;
+      }
+      setup();
+    });
+  }
+  function setup() {
+    if (registered || location.pathname !== "/watch") {
+      return;
+    }
+    registered = true;
+    const videoElement = document.getElementsByTagName("video")[0];
+    const youtubeLeftControls2 = document.getElementsByClassName(ytLeftControls)[0];
+    loop_default(videoElement, youtubeLeftControls2);
+    speed_default(videoElement);
   }
 })();
