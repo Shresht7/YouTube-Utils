@@ -15,7 +15,7 @@ const setChevron = (color) => `
     </svg>
 `
 
-const setupSpeed = (videoElement, youTubeLeftControls) => {
+const setupSpeed = (videoElement, youtubeLeftControls) => {
 
     let CURRENT_SPEED = videoElement.playbackRate
 
@@ -94,14 +94,14 @@ const setupSpeed = (videoElement, youTubeLeftControls) => {
     let timeout
     speedControl.addEventListener('mouseover', () => {
         if (timeout) { clearTimeout(timeout) }
-        speedLeftChevron.style.opacity = 1
-        speedRightChevron.style.opacity = 1
+        speedLeftChevron.style.opacity = "1"
+        speedRightChevron.style.opacity = "1"
     })
 
     speedControl.addEventListener('mouseleave', () => {
         timeout = setTimeout(() => {
-            speedLeftChevron.style.opacity = 0
-            speedRightChevron.style.opacity = 0
+            speedLeftChevron.style.opacity = "0"
+            speedRightChevron.style.opacity = "0"
         }, 3000)
     })
 

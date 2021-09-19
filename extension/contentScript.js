@@ -62,7 +62,7 @@
         </svg>
     `;
   };
-  var setupLoop = (videoElement, youtubeLeftControls2) => {
+  var setupLoop = (videoElement, youtubeLeftControls) => {
     const loopToggleBtn = new DOMElement("div").withID("yt-utils-loopControl").withHTML(loopSVG(videoElement.loop)).withClasses([ytButton]).withStyles(loopStyles).getElement();
     loopToggleBtn.addEventListener("click", () => {
       videoElement.loop = !videoElement.loop;
@@ -76,7 +76,7 @@
       });
     });
     loopObserver.observe(videoElement, { attributes: true });
-    youtubeLeftControls2.insertBefore(loopToggleBtn, youtubeLeftControls2.childNodes[3]);
+    youtubeLeftControls.insertBefore(loopToggleBtn, youtubeLeftControls.childNodes[3]);
   };
   var loop_default = setupLoop;
 
@@ -91,7 +91,7 @@
         </g>
     </svg>
 `;
-  var setupSpeed = (videoElement, youTubeLeftControls) => {
+  var setupSpeed = (videoElement, youtubeLeftControls) => {
     let CURRENT_SPEED = videoElement.playbackRate;
     const speedControl = new DOMElement("div").withID("yt-utils-speedControlArea").withStyles({
       display: "flex"
@@ -132,13 +132,13 @@
       if (timeout) {
         clearTimeout(timeout);
       }
-      speedLeftChevron.style.opacity = 1;
-      speedRightChevron.style.opacity = 1;
+      speedLeftChevron.style.opacity = "1";
+      speedRightChevron.style.opacity = "1";
     });
     speedControl.addEventListener("mouseleave", () => {
       timeout = setTimeout(() => {
-        speedLeftChevron.style.opacity = 0;
-        speedRightChevron.style.opacity = 0;
+        speedLeftChevron.style.opacity = "0";
+        speedRightChevron.style.opacity = "0";
       }, 3e3);
     });
     videoElement.addEventListener("ratechange", (e) => {
@@ -166,8 +166,8 @@
     }
     registered = true;
     const videoElement = document.getElementsByTagName("video")[0];
-    const youtubeLeftControls2 = document.getElementsByClassName(ytLeftControls)[0];
-    loop_default(videoElement, youtubeLeftControls2);
+    const youtubeLeftControls = document.getElementsByClassName(ytLeftControls)[0];
+    loop_default(videoElement, youtubeLeftControls);
     speed_default(videoElement);
   }
 })();
