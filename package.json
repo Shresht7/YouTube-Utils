@@ -4,11 +4,13 @@
   "description": "A chrome-extension with utility features for YouTube",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "node .esbuild.config.js",
+    "dev": "npm run build --watch"
   },
   "author": "Shresht7",
   "license": "MIT",
-  "dependencies": {
-    "@types/chrome": "^0.0.145"
+  "devDependencies": {
+    "@types/chrome": "^0.0.145",
+    "esbuild": "^0.12.28"
   }
 }
