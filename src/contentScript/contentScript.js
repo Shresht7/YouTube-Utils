@@ -38,6 +38,6 @@ function setup() {
     setupLoop(videoElement, youtubeLeftControls)
 
     //  SETUP SPEED CONTROL
-    setupSpeed(videoElement)
+    setupSpeed(videoElement, youtubeLeftControls)
 
 }

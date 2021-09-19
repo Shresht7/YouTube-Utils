@@ -168,6 +168,6 @@
     const videoElement = document.getElementsByTagName("video")[0];
     const youtubeLeftControls = document.getElementsByClassName(ytLeftControls)[0];
     loop_default(videoElement, youtubeLeftControls);
-    speed_default(videoElement);
+    speed_default(videoElement, youtubeLeftControls);
   }
 })();
