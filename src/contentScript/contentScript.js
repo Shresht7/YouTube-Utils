@@ -1,6 +1,7 @@
 //  Library
 import setupLoop from './lib/loop'
 import setupSpeed from './lib/speed'
+import setupPip from './lib/pip'
 
 //  Utils
 import { ytNavEvent, ytLeftControls } from './utils/YTConstants'
@@ -39,5 +40,8 @@ function setup() {
 
     //  SETUP SPEED CONTROL
     setupSpeed(videoElement, youtubeLeftControls)
+
+    //  SETUP PIP
+    setupPip(videoElement, youtubeLeftControls)
 
 }
