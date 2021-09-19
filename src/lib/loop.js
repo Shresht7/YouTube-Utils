@@ -3,8 +3,6 @@ import { DOMElement } from "../utils/DOMElement"
 import { ytButton } from '../utils/YTConstants'
 
 //  Constants
-const loopID = 'yt-utils-loopControl'   //  Loop Button ID
-
 const loopONColor = '#ff0033'  //  Red color for Loop's ON state
 const loopOFFColor = '#ffffff'  //  White color for Loop's OFF state
 
@@ -36,7 +34,7 @@ const setupLoop = (videoElement, youtubeLeftControls) => {
 
     //  Create button to toggle loop
     const loopToggleBtn = new DOMElement('div')
-        .withID(loopID)
+        .withID('yt-utils-loopControl')
         .withHTML(loopSVG(videoElement.loop))
         .withClasses([ytButton])
         .withStyles(loopStyles)
