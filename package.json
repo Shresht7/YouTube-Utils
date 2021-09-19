@@ -4,8 +4,7 @@
   "description": "A chrome-extension with utility features for YouTube",
   "main": "index.js",
   "scripts": {
-    "build": "node .esbuild.config.js",
-    "dev": "npm run build --watch"
+    "dev": "node .esbuild.config.js"
   },
   "author": "Shresht7",
   "license": "MIT",
