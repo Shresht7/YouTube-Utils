@@ -4,7 +4,7 @@ import setupSpeed from './lib/speed'    //  Setup Speed Controls
 import setupPip from './lib/pip'    //  Setup Picture-in-Picture Mode
 
 //  Utils
-import { ytNavEvent, ytLeftControls } from './utils/YTConstants'
+import { ytNavEvent, ytLeftControls, ytRightControls } from './utils/YTConstants'
 
 //  =======================
 //  REGISTER CONTENT SCRIPT
@@ -37,6 +37,7 @@ function setup() {
     //  DOM ELEMENTS
     const videoElement = document.getElementsByTagName('video')[0]  //  YouTube Video Player
     const youtubeLeftControls = document.getElementsByClassName(ytLeftControls)[0] //  YouTube Player Controls (left-side)
+    const youtubeRightControls = document.getElementsByClassName(ytRightControls)[0] //  YouTube Player Controls (right-side)
 
     //  SETUP LOOP TOGGLE
     setupLoop(videoElement, youtubeLeftControls)
@@ -45,6 +46,6 @@ function setup() {
     setupSpeed(videoElement, youtubeLeftControls)
 
     //  SETUP PIP
-    setupPip(videoElement, youtubeLeftControls)
+    setupPip(videoElement, youtubeRightControls)
 
 }
