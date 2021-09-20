@@ -6,8 +6,11 @@ const esbuild = require('esbuild')  //  ESBUILD
 
 const config = {
 
-    entryPoints: ['./src/contentScript/contentScript.js'],
-    outdir: './extension',
+    entryPoints: [
+        './src/contentScript.js',
+        './src/backgroundScript.js',
+    ],
+    outdir: './extension/',
     bundle: true,
     watch: {
         onRebuild: (error, result) => {
