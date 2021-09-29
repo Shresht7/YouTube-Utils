@@ -1,4 +1,9 @@
 (() => {
   // src/backgroundScript.js
-  console.log("Hello World");
+  chrome.commands.onCommand.addListener((shortcut) => {
+    if (shortcut.includes("+Q")) {
+      console.log("Reloading...");
+      chrome.runtime.reload();
+    }
+  });
 })();
