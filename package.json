@@ -11,5 +11,8 @@
   "devDependencies": {
     "@types/chrome": "^0.0.145",
     "esbuild": "^0.12.28"
+  },
+  "dependencies": {
+    "chokidar": "^3.5.2"
   }
 }
