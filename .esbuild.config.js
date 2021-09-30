@@ -33,8 +33,10 @@ esbuild.build(config).then(() => console.log('build successful ✅')).catch(() =
 
 chokidar.watch('./src').on('all', (event, srcPath, stat) => {
 
+    //  Files to watch
     const trackedFiles = [
         'manifest.json',
+        'manifest.js',
         'popup.html',
         'options.html',
         'icons',
@@ -43,8 +45,9 @@ chokidar.watch('./src').on('all', (event, srcPath, stat) => {
     const baseName = path.basename(srcPath)
     const destPath = path.join(__dirname, 'extension', baseName)
 
-    if (!trackedFiles.includes(baseName)) { return }
+    if (!trackedFiles.includes(baseName)) { return }    //  Short-Circuit if the file is not being tracked
 
+    //  Copy files over  to the extension folder
     if (stat.isFile()) {
         fs.copyFile(srcPath, destPath, (err) => { if (err) { console.error(err) } })
     } else {
@@ -54,5 +57,15 @@ chokidar.watch('./src').on('all', (event, srcPath, stat) => {
         }
     }
 
+    //  Export manifest.js file to manifest.json if it exists
+    if (fs.existsSync(path.join(__dirname, 'src', 'manifest.js'))) {
+        const manifest = require('./src/manifest')
+        fs.writeFile(
+            path.join(__dirname, 'extension', 'manifest.json'),
+            JSON.stringify(manifest, null, 2),
+            { encoding: 'utf-8' },
+            (err) => { if (err) { console.log(err) } }
+        )
+    }
 
 })
