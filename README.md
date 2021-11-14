@@ -3,6 +3,8 @@
 
 A chrome-extension that adds some utility features to YouTube.
 
+![Screenshot](screenshot.png)
+
 ## OBJECTIVES
 
 - Learn about browser extensions.
