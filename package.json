@@ -2,17 +2,16 @@
   "name": "youtube-utils",
   "version": "0.1.0",
   "description": "A chrome-extension with utility features for YouTube",
-  "main": "index.js",
+  "main": "extension/backgroundScript.js",
   "scripts": {
     "dev": "node .esbuild.config.js"
   },
   "author": "Shresht7",
   "license": "MIT",
+  "dependencies": {},
   "devDependencies": {
     "@types/chrome": "^0.0.145",
-    "esbuild": "^0.12.28"
-  },
-  "dependencies": {
+    "esbuild": "^0.12.28",
     "chokidar": "^3.5.2"
   }
 }
