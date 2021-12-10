@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../src/background.js"],
-  "sourcesContent": ["//  Shortcut: Reload Extension\r\nchrome.commands.onCommand.addListener(shortcut => {\r\n    if (shortcut.includes('+Q')) {\r\n        console.log('Reloading...')\r\n        chrome.runtime.reload()\r\n    }\r\n})"],
-  "mappings": ";;AACA,SAAO,SAAS,UAAU,YAAY,cAAY;AAC9C,QAAI,SAAS,SAAS,OAAO;AACzB,cAAQ,IAAI;AACZ,aAAO,QAAQ;AAAA;AAAA;",
-  "names": []
-}
