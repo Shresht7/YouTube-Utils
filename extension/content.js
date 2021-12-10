@@ -37,18 +37,17 @@
     }
   };
 
+  // src/utils/YTConstants.js
+  var ytpButton = ".ytp-button";
+  var ytNavEvent = "yt-navigate-start";
+  var ytLeftControls = "ytp-left-controls";
+  var ytRightControls = "ytp-right-controls";
+
   // src/lib/loop.js
-  var loopONColor = "#ff0033";
-  var loopOFFColor = "#ffffff";
-  var loopStyles = {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    opacity: 0.9,
-    transition: "0.1s"
-  };
-  var loopSVG = (isON) => {
-    const color = isON ? loopONColor : loopOFFColor;
+  var LOOP_BTN_ID = "yt-utils-loopControl";
+  var loopColor = { ON: "#ff0033", OFF: "#ffffff" };
+  var getLoopSVG = (isON) => {
+    const color = isON ? loopColor.ON : loopColor.OFF;
     return `
         <svg xmlns="http://www.w3.org/2000/svg" width='24' height='24' viewBox="0 0 48 48"><title>yt-utils-loopIcon</title>
             <g class="nc-icon-wrapper" fill="${color}">
@@ -58,7 +57,13 @@
     `;
   };
   var setupLoop = (videoElement, youtubeLeftControls) => {
-    const loopToggleBtn = new DOMElement("div").withID("yt-utils-loopControl").withHTML(loopSVG(videoElement.loop)).withClasses([".ytp-button"]).withStyles(loopStyles).getElement();
+    const loopToggleBtn = new DOMElement("div").withID(LOOP_BTN_ID).withHTML(getLoopSVG(videoElement.loop)).withClasses([ytpButton]).withStyles({
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      opacity: 0.9,
+      transition: "0.1s"
+    }).getElement();
     loopToggleBtn.addEventListener("click", () => {
       videoElement.loop = !videoElement.loop;
     });
@@ -67,7 +72,7 @@
         if (mutation.type !== "attributes" || mutation.attributeName !== "loop") {
           return;
         }
-        loopToggleBtn.innerHTML = loopSVG(videoElement.loop);
+        loopToggleBtn.innerHTML = getLoopSVG(videoElement.loop);
       });
     });
     loopObserver.observe(videoElement, { attributes: true });
@@ -76,10 +81,16 @@
   var loop_default = setupLoop;
 
   // src/lib/speed.js
+  var SPEED_ID = {
+    ControlArea: "yt-utils-speedControlArea",
+    Display: "yt-utils-speedDisplay",
+    LeftChevron: "yt-utils-speedLeftChevron",
+    RightChevron: "yt-utils.speedRightChevron"
+  };
   var ADJUST_SPEED = 0.5;
   var MIN_SPEED = 0.5;
   var MAX_SPEED = 4;
-  var setChevron = (color) => `
+  var getChevronSVG = (color) => `
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 48 48"><title>yt-utils-chevron</title>
         <g class="nc-icon-wrapper" fill=${color || "#ffffff"}>
             <path d="M20 12l-2.83 2.83L26.34 24l-9.17 9.17L20 36l12-12z"/>
@@ -88,11 +99,11 @@
 `;
   var setupSpeed = (videoElement, youtubeLeftControls) => {
     let CURRENT_SPEED = videoElement.playbackRate;
-    const speedControl = new DOMElement("div").withID("yt-utils-speedControlArea").withStyles({
+    const speedControl = new DOMElement("div").withID(SPEED_ID.ControlArea).withStyles({
       display: "flex"
     }).getElement();
     youtubeLeftControls.insertBefore(speedControl, youtubeLeftControls.childNodes[6]);
-    const speedLeftChevron = new DOMElement("div").withID("yt-utils-speedLeftChevron").withHTML(setChevron()).withStyles({
+    const speedLeftChevron = new DOMElement("div").withID(SPEED_ID.LeftChevron).withHTML(getChevronSVG()).withStyles({
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
@@ -105,9 +116,9 @@
       }
     });
     speedControl.appendChild(speedLeftChevron);
-    const speedDisplay = new DOMElement("p").withID("yt-utils-speedDisplay").withText(videoElement.playbackRate.toFixed(1) + "x").getElement();
+    const speedDisplay = new DOMElement("p").withID(SPEED_ID.Display).withText(videoElement.playbackRate.toFixed(1) + "x").getElement();
     speedControl.appendChild(speedDisplay);
-    const speedRightChevron = new DOMElement("div").withID("yt-utils-speedRightChevron").withHTML(setChevron()).withStyles({
+    const speedRightChevron = new DOMElement("div").withID(SPEED_ID.RightChevron).withHTML(getChevronSVG()).withStyles({
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
@@ -122,16 +133,16 @@
     videoElement.addEventListener("durationchange", (e) => {
       e.target.playbackRate = CURRENT_SPEED;
     });
-    let timeout;
+    let speedHoverTimeout;
     speedControl.addEventListener("mouseover", () => {
-      if (timeout) {
-        clearTimeout(timeout);
+      if (speedHoverTimeout) {
+        clearTimeout(speedHoverTimeout);
       }
       speedLeftChevron.style.opacity = 1;
       speedRightChevron.style.opacity = 1;
     });
     speedControl.addEventListener("mouseleave", () => {
-      timeout = setTimeout(() => {
+      speedHoverTimeout = setTimeout(() => {
         speedLeftChevron.style.opacity = 0;
         speedRightChevron.style.opacity = 0;
       }, 3e3);
@@ -143,14 +154,9 @@
   };
   var speed_default = setupSpeed;
 
-  // src/utils/YTConstants.js
-  var ytpButton = ".ytp-button";
-  var ytNavEvent = "yt-navigate-start";
-  var ytLeftControls = "ytp-left-controls";
-  var ytRightControls = "ytp-right-controls";
-
   // src/lib/pip.js
-  var setPip = (color) => `
+  var PIP_BTN_ID = "yt-utils-pipBtn";
+  var getPIPSVG = (color) => `
     <svg width="36" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><title>yt-utils-pip</title>
     <path d="M20 4H4C2.89543 4 2 4.89543 2 6V18C2 19.1046 2.89543 20 4 20H20C21.1046 20 22 19.1046 22 18V6C22 4.89543 21.1046 4 20 4Z" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     <path d="M20 13H15C13.8954 13 13 13.8954 13 15V18C13 19.1046 13.8954 20 15 20H20C21.1046 20 22 19.1046 22 18V15C22 13.8954 21.1046 13 20 13Z" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -162,7 +168,7 @@
       return;
     }
     PIPMODE = true;
-    const pipBtn = new DOMElement("div").withID("yt-utils-pipBtn").withHTML(setPip("white")).withClasses([ytpButton]).withStyles({
+    const pipBtn = new DOMElement("div").withID(PIP_BTN_ID).withHTML(getPIPSVG("white")).withClasses([ytpButton]).withStyles({
       display: "inline-flex",
       justifyContent: "center",
       alignItems: "center",
@@ -181,15 +187,15 @@
       PIPMODE = !PIPMODE;
     });
     videoElement.addEventListener("enterpictureinpicture", () => {
-      pipBtn.innerHTML = setPip("red");
+      pipBtn.innerHTML = getPIPSVG("red");
     });
     videoElement.addEventListener("leavepictureinpicture", () => {
-      pipBtn.innerHTML = setPip("white");
+      pipBtn.innerHTML = getPIPSVG("white");
     });
   };
   var pip_default = setupPip;
 
-  // src/contentScript.js
+  // src/content.js
   var REGISTERED;
   if (document.getElementsByTagName("video").length > 0) {
     setup();
@@ -214,3 +220,4 @@
     pip_default(videoElement, youtubeRightControls);
   }
 })();
+//# sourceMappingURL=content.js.map

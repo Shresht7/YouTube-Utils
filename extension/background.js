@@ -1,5 +1,5 @@
 (() => {
-  // src/backgroundScript.js
+  // src/background.js
   chrome.commands.onCommand.addListener((shortcut) => {
     if (shortcut.includes("+Q")) {
       console.log("Reloading...");
@@ -7,3 +7,4 @@
     }
   });
 })();
+//# sourceMappingURL=background.js.map

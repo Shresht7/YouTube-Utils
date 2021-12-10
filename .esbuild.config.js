@@ -6,6 +6,8 @@ const path = require('path')
 const esbuild = require('esbuild')
 const chokidar = require('chokidar')
 
+const args = process.argv.slice(2)
+
 //  =====================
 //  ESBUILD CONFIGURATION
 //  =====================
@@ -16,8 +18,8 @@ const SRC_DIR = 'src'
 const BACKGROUND_SCRIPT = path.join(SRC_DIR, 'background.js')
 const CONTENT_SCRIPT = path.join(SRC_DIR, 'content.js')
 
-// const POPUP_SCRIPT = path.join(SRC_DIR, 'popup', 'script.js')
-// const OPTIONS_SCRIPT = path.join(SRC_DIR, 'options', 'script.js')
+const POPUP_SCRIPT = path.join(SRC_DIR, 'popup', 'script.js')
+const OPTIONS_SCRIPT = path.join(SRC_DIR, 'options', 'script.js')
 
 const MANIFEST = 'manifest.js'
 
@@ -72,11 +74,12 @@ chokidar.watch(SRC_DIR).on('all', (event, srcPath, stat) => {
 
     //  Copy files over  to the extension folder
     if (stat.isFile()) {
+        if (!fs.existsSync(destPath)) { fs.mkdirSync(destPath.replace(baseName, ''), { recursive: true }) }
         fs.copyFile(srcPath, destPath, (err) => { if (err) { console.error(err) } })
     } else {
-        for (const x of fs.readdirSync(srcPath)) {
-            if (!fs.existsSync(destPath)) { fs.mkdirSync(destPath) }
-            fs.copyFile(path.join(srcPath, x), path.join(destPath, x), (err) => { if (err) { console.error(err) } })
+        if (!fs.existsSync(destPath)) { fs.mkdirSync(destPath, { recursive: true }) }
+        for (const dir of fs.readdirSync(srcPath)) {
+            fs.copyFile(path.join(srcPath, dir), path.join(destPath, dir), (err) => { if (err) { console.error(err) } })
         }
     }
 

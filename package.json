@@ -4,7 +4,8 @@
   "description": "A chrome-extension with utility features for YouTube",
   "main": "extension/backgroundScript.js",
   "scripts": {
-    "dev": "node .esbuild.config.js"
+    "dev": "node .esbuild.config.js",
+    "clean": "npx rimraf extension"
   },
   "author": "Shresht7",
   "license": "MIT",
