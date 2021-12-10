@@ -1,24 +1,21 @@
 //  Utils
-import { DOMElement } from "../utils/DOMElement"
+import { DOMElement } from '../utils/DOMElement'
+import { ytpButton } from '../utils/YTConstants'
+
+/** Loop Button HTML ID */
+const LOOP_BTN_ID = 'yt-utils-loopControl'
 
 //  Loop Button CSS
-const loopONColor = '#ff0033'  //  Red color for Loop's ON state
-const loopOFFColor = '#ffffff'  //  White color for Loop's OFF state
-const loopStyles = {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    opacity: 0.9,
-    transition: '0.1s'
-}
+/** Loop button color */
+const loopColor = { ON: '#ff0033' /* Red */, OFF: '#ffffff' /* White */ }
 
 /**
  * Creates and returns the loop SVG
  * @param {boolean} isON Video Loop Toggle State
  * @returns Loop SVG
  */
-const loopSVG = (isON) => {
-    const color = isON ? loopONColor : loopOFFColor
+const getLoopSVG = (isON) => {
+    const color = isON ? loopColor.ON : loopColor.OFF
     return (`
         <svg xmlns="http://www.w3.org/2000/svg" width='24' height='24' viewBox="0 0 48 48"><title>yt-utils-loopIcon</title>
             <g class="nc-icon-wrapper" fill="${color}">
@@ -41,10 +38,16 @@ const setupLoop = (videoElement, youtubeLeftControls) => {
 
     //  Create button to toggle loop
     const loopToggleBtn = new DOMElement('div')
-        .withID('yt-utils-loopControl')
-        .withHTML(loopSVG(videoElement.loop))
-        .withClasses(['.ytp-button'])
-        .withStyles(loopStyles)
+        .withID(LOOP_BTN_ID)
+        .withHTML(getLoopSVG(videoElement.loop))
+        .withClasses([ytpButton])
+        .withStyles({
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            opacity: 0.9,
+            transition: '0.1s'
+        })
         .getElement()
 
 
@@ -55,7 +58,7 @@ const setupLoop = (videoElement, youtubeLeftControls) => {
     const loopObserver = new MutationObserver(mutations => {
         mutations.forEach(mutation => {
             if (mutation.type !== 'attributes' || mutation.attributeName !== 'loop') { return }
-            loopToggleBtn.innerHTML = loopSVG(videoElement.loop)
+            loopToggleBtn.innerHTML = getLoopSVG(videoElement.loop)
         })
     })
     loopObserver.observe(videoElement, { attributes: true })

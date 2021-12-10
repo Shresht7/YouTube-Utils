@@ -1,9 +1,21 @@
 //  Utils
 import { DOMElement } from '../utils/DOMElement'
 
-//  Control parameters
+const SPEED_ID = {
+    ControlArea: 'yt-utils-speedControlArea',
+    Display: 'yt-utils-speedDisplay',
+    LeftChevron: 'yt-utils-speedLeftChevron',
+    RightChevron: 'yt-utils.speedRightChevron'
+}
+
+//  CONTROL PARAMETERS
+//  ------------------
+
+/** Speed adjustment step */
 const ADJUST_SPEED = 0.5
+/** Minimum playback speed */
 const MIN_SPEED = 0.5
+/** Maximum playback speed */
 const MAX_SPEED = 4.0
 
 /**
@@ -11,7 +23,7 @@ const MAX_SPEED = 4.0
  * @param {string} color Hex color code
  * @returns Chevron SVG
  */
-const setChevron = (color) => `
+const getChevronSVG = (color) => `
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 48 48"><title>yt-utils-chevron</title>
         <g class="nc-icon-wrapper" fill=${color || '#ffffff'}>
             <path d="M20 12l-2.83 2.83L26.34 24l-9.17 9.17L20 36l12-12z"/>
@@ -26,11 +38,12 @@ const setChevron = (color) => `
  */
 const setupSpeed = (videoElement, youtubeLeftControls) => {
 
+    /** Current playback speed */
     let CURRENT_SPEED = videoElement.playbackRate   //  Initialize the Current Speed Variable
 
     //  Speed Control Container Div
     const speedControl = new DOMElement('div')
-        .withID('yt-utils-speedControlArea')
+        .withID(SPEED_ID.ControlArea)
         .withStyles({
             display: 'flex',
         })
@@ -43,8 +56,8 @@ const setupSpeed = (videoElement, youtubeLeftControls) => {
     //      ------------------
 
     const speedLeftChevron = new DOMElement('div')
-        .withID('yt-utils-speedLeftChevron')
-        .withHTML(setChevron())
+        .withID(SPEED_ID.LeftChevron)
+        .withHTML(getChevronSVG())
         .withStyles({
             display: 'flex',
             justifyContent: 'center',
@@ -64,7 +77,7 @@ const setupSpeed = (videoElement, youtubeLeftControls) => {
 
     //  Displays the current playback rate
     const speedDisplay = new DOMElement('p')
-        .withID('yt-utils-speedDisplay')
+        .withID(SPEED_ID.Display)
         .withText(videoElement.playbackRate.toFixed(1) + 'x')
         .getElement()
 
@@ -74,8 +87,8 @@ const setupSpeed = (videoElement, youtubeLeftControls) => {
     //      -------------------
 
     const speedRightChevron = new DOMElement('div')
-        .withID('yt-utils-speedRightChevron')
-        .withHTML(setChevron())
+        .withID(SPEED_ID.RightChevron)
+        .withHTML(getChevronSVG())
         .withStyles({
             display: 'flex',
             justifyContent: 'center',
@@ -100,15 +113,15 @@ const setupSpeed = (videoElement, youtubeLeftControls) => {
     //  SPEED CONTROL HOVER INTERACTION
     //  -------------------------------
 
-    let timeout
+    let speedHoverTimeout
     speedControl.addEventListener('mouseover', () => {
-        if (timeout) { clearTimeout(timeout) }
+        if (speedHoverTimeout) { clearTimeout(speedHoverTimeout) }
         speedLeftChevron.style.opacity = 1
         speedRightChevron.style.opacity = 1
     })
 
     speedControl.addEventListener('mouseleave', () => {
-        timeout = setTimeout(() => {
+        speedHoverTimeout = setTimeout(() => {
             speedLeftChevron.style.opacity = 0
             speedRightChevron.style.opacity = 0
         }, 3000)
