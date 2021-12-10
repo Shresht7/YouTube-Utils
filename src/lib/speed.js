@@ -81,6 +81,9 @@ const setupSpeed = (videoElement, youtubeLeftControls) => {
         .withText(videoElement.playbackRate.toFixed(1) + 'x')
         .getElement()
 
+    //  Clicking on the display resets the speed back to 1
+    speedDisplay.addEventListener('click', () => videoElement.playbackRate = 1)
+
     speedControl.appendChild(speedDisplay)
 
     //      SPEED RIGHT CHEVRON

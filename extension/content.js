@@ -117,6 +117,7 @@
     });
     speedControl.appendChild(speedLeftChevron);
     const speedDisplay = new DOMElement("p").withID(SPEED_ID.Display).withText(videoElement.playbackRate.toFixed(1) + "x").getElement();
+    speedDisplay.addEventListener("click", () => videoElement.playbackRate = 1);
     speedControl.appendChild(speedDisplay);
     const speedRightChevron = new DOMElement("div").withID(SPEED_ID.RightChevron).withHTML(getChevronSVG()).withStyles({
       display: "flex",
