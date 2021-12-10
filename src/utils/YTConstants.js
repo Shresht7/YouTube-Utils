@@ -3,7 +3,7 @@
 //  ==================
 
 /** YouTube player classes */
-export const ytVideoPlayerClases = ['video-stream', 'html5-main-video']
+export const ytVideoPlayerClasses = ['video-stream', 'html5-main-video']
 
 /** YouTube button class */
 export const ytpButton = '.ytp-button'
