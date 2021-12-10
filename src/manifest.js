@@ -30,7 +30,7 @@ module.exports = {
     //  =================
 
     "background": {
-        "service_worker": "backgroundScript.js"
+        "service_worker": "background.js"
     },
 
     //  CONTENT SCRIPTS
@@ -42,7 +42,7 @@ module.exports = {
                 "https://*.youtube.com/*"
             ],
             "js": [
-                "contentScript.js"
+                "content.js"
             ]
         }
     ],
