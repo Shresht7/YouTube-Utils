@@ -13,8 +13,8 @@ const chokidar = require('chokidar')
 const OUT_DIR = 'extension'
 const SRC_DIR = 'src'
 
-const BACKGROUND_SCRIPT = path.join(SRC_DIR, 'backgroundScript.js')
-const CONTENT_SCRIPT = path.join(SRC_DIR, 'contentScript.js')
+const BACKGROUND_SCRIPT = path.join(SRC_DIR, 'background.js')
+const CONTENT_SCRIPT = path.join(SRC_DIR, 'content.js')
 
 // const POPUP_SCRIPT = path.join(SRC_DIR, 'popup', 'script.js')
 // const OPTIONS_SCRIPT = path.join(SRC_DIR, 'options', 'script.js')

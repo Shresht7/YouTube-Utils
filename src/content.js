@@ -6,18 +6,21 @@ import setupPip from './lib/pip'    //  Setup Picture-in-Picture Mode
 //  Utils
 import { ytNavEvent, ytLeftControls, ytRightControls } from './utils/YTConstants'
 
-//  =======================
-//  REGISTER CONTENT SCRIPT
-//  =======================
+//  ====================
+//  SETUP CONTENT SCRIPT
+//  ====================
 
-let REGISTERED  //  Boolean to check if content-script has already been registered
-
+/**
+ * Boolean to check if the content-script has already been registered
+ * @type {Boolean}
+ */
+let REGISTERED
 if (document.getElementsByTagName('video').length > 0) {                //  If the initially loaded page has video elements (i.e watch page)
-    setup()                                                             //  Then register Content-Script
-} else {                                                                //  Else if the first page is not /watch, then register a nav listener
+    setup()                                                             //  Then run setup
+} else {                                                                //  Else, register a nav listener
     document.addEventListener(ytNavEvent, () => {
         if (REGISTERED || location.pathname !== '/watch') { return }    //  Skip registration if not navigating to /watch or if already registered
-        setup()                                                         //  Register Content-Script on navigation to /watch
+        setup()                                                         //  Run setup on navigation to /watch
     })
 }
 
