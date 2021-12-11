@@ -6,8 +6,6 @@ const path = require('path')
 const esbuild = require('esbuild')
 const chokidar = require('chokidar')
 
-const args = process.argv.slice(2)
-
 //  =====================
 //  ESBUILD CONFIGURATION
 //  =====================
@@ -18,8 +16,8 @@ const SRC_DIR = 'src'
 const BACKGROUND_SCRIPT = path.join(SRC_DIR, 'background.js')
 const CONTENT_SCRIPT = path.join(SRC_DIR, 'content.js')
 
-const POPUP_SCRIPT = path.join(SRC_DIR, 'popup', 'script.js')
-const OPTIONS_SCRIPT = path.join(SRC_DIR, 'options', 'script.js')
+// const POPUP_SCRIPT = path.join(SRC_DIR, 'popup', 'script.js')
+// const OPTIONS_SCRIPT = path.join(SRC_DIR, 'options', 'script.js')
 
 const MANIFEST = 'manifest.js'
 
